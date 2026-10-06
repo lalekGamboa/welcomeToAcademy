@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Match Word Game - Main Menu</title>
+    <link rel="stylesheet" href="css/main_menu.css">
+
+</head>
+
+
+<body>
+
+
+<div class="menu-container">
+
+
+    <!-- LOGO -->
+
+    <div class="logo">
+        🧠
+    </div>
+
+
+    <h1>
+        Match Word Game
+    </h1>
+
+
+    <p class="description">
+
+        Match each English word with
+        its correct meaning.
+
+    </p>
+
+
+    <!-- TIME -->
+
+    <div class="menu-section">
+
+        <h2>
+            ⏱️ Choose Game Time
+        </h2>
+
+
+        <div class="button-group">
+
+            <button
+                class="option-btn time-btn active"
+                onclick="selectTime(300, this)">
+
+                5 Minutes
+
+            </button>
+
+
+            <button
+                class="option-btn time-btn"
+                onclick="selectTime(600, this)">
+
+                10 Minutes
+
+            </button>
+
+
+            <button
+                class="option-btn time-btn"
+                onclick="selectTime(900, this)">
+
+                15 Minutes
+
+            </button>
+
+
+            <button
+                class="option-btn time-btn unlimited"
+                onclick="selectTime(0, this)">
+
+                ♾️ No Limit
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- DIFFICULTY -->
+
+    <div class="menu-section">
+
+        <h2>
+            🎯 Choose Difficulty
+        </h2>
+
+
+        <div class="button-group">
+
+
+            <button
+                class="option-btn difficulty-btn active"
+                onclick="selectDifficulty('easy', this)">
+
+                😊 Easy
+
+            </button>
+
+
+            <button
+                class="option-btn difficulty-btn"
+                onclick="selectDifficulty('medium', this)">
+
+                😎 Medium
+
+            </button>
+
+
+            <button
+                class="option-btn difficulty-btn"
+                onclick="selectDifficulty('hard', this)">
+
+                🔥 Hard
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- SELECTED INFORMATION -->
+
+    <div class="selected-info">
+
+        <div>
+
+            ⏱️ Time:
+
+            <strong id="selectedTime">
+                5 Minutes
+            </strong>
+
+        </div>
+
+        <div style="margin-top: 5px;">
+
+            🎯 Difficulty:
+
+            <strong id="selectedDifficulty">
+                Easy
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- PLAY GAME -->
+
+    <button
+        class="play-btn"
+        onclick="playGame()">
+
+        ▶️ PLAY GAME
+
+    </button>
+
+
+    <!-- LESSON -->
+
+    <button
+        class="lesson-btn"
+        onclick="learnLesson()">
+
+        📚 LEARN THE LESSON
+
+    </button>
+
+
+    <div class="footer">
+
+        Match words • Learn English • Have Fun 🎮
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+    /* ===============================
+       GAME SETTINGS
+    =============================== */
+
+    let selectedTime = 300;
+
+    let selectedDifficulty = "easy";
+
+
+    /* ===============================
+       SELECT TIME
+    =============================== */
+
+    function selectTime(seconds, button) {
+
+        selectedTime = seconds;
+
+
+        document
+            .querySelectorAll(".time-btn")
+            .forEach(btn => {
+
+                btn.classList.remove("active");
+
+            });
+
+
+        button.classList.add("active");
+
+
+        let timeText;
+
+
+        if (seconds === 300) {
+
+            timeText = "5 Minutes";
+
+        }
+
+        else if (seconds === 600) {
+
+            timeText = "10 Minutes";
+
+        }
+
+        else if (seconds === 900) {
+
+            timeText = "15 Minutes";
+
+        }
+
+        else {
+
+            timeText = "No Limit";
+
+        }
+
+
+        document
+            .getElementById("selectedTime")
+            .textContent = timeText;
+
+    }
+
+
+    /* ===============================
+       SELECT DIFFICULTY
+    =============================== */
+
+    function selectDifficulty(level, button) {
+
+        selectedDifficulty = level;
+
+
+        document
+            .querySelectorAll(".difficulty-btn")
+            .forEach(btn => {
+
+                btn.classList.remove("active");
+
+            });
+
+
+        button.classList.add("active");
+
+
+        let difficultyText;
+
+
+        if (level === "easy") {
+
+            difficultyText = "Easy";
+
+        }
+
+        else if (level === "medium") {
+
+            difficultyText = "Medium";
+
+        }
+
+        else {
+
+            difficultyText = "Hard";
+
+        }
+
+
+        document
+            .getElementById("selectedDifficulty")
+            .textContent =
+                difficultyText;
+
+    }
+
+
+    /* ===============================
+       START GAME
+    =============================== */
+
+    function playGame() {
+
+        window.location.href =
+            "game.html?time="
+            + selectedTime
+            + "&difficulty="
+            + selectedDifficulty;
+
+    }
+
+
+    /* ===============================
+       OPEN LESSON
+    =============================== */
+
+    function learnLesson() {
+
+        window.location.href = "lesson.html";
+
+    }
+
+
+</script>
+
+
+</body>
+
+

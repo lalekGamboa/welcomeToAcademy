@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Match Word Game</title>
+    <link rel="stylesheet" href="css/game.css">
+
+</head>
+
+
+<body>
+
+
+<div class="game-container">
+
+
+    <h1>
+        🧠 Match Word Game
+    </h1>
+
+
+    <p class="description">
+
+        Match each English word
+        with its correct meaning.
+
+    </p>
+
+
+    <!-- GAME -->
+
+    <div id="gameArea">
+
+
+        <!-- SCORE BOARD -->
+
+        <div class="score-board">
+
+
+            <div class="score-box">
+
+                Score
+
+                <span id="score">
+                    0
+                </span>
+
+            </div>
+
+
+            <div class="score-box">
+
+                Matches
+
+                <span>
+
+                    <span id="matches">
+                        0
+                    </span>
+
+                    /
+
+                    <span id="totalPairs">
+                        8
+                    </span>
+
+                </span>
+
+            </div>
+
+
+            <div class="score-box">
+
+                ⏱️ Time
+
+                <span id="timer">
+                    05:00
+                </span>
+
+            </div>
+
+
+            <div class="score-box">
+
+                ❤️ Lives
+
+                <span id="lives">
+                    3
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- GAME BOARD -->
+
+        <div
+            class="game-board"
+            id="gameBoard">
+
+        </div>
+
+
+        <!-- MESSAGE -->
+
+        <div id="message"></div>
+
+
+        <!-- GAME BUTTONS -->
+
+        <div class="game-buttons">
+
+
+            <button
+                class="game-btn restart-btn"
+                onclick="restartGame()">
+
+                🔄 Restart
+
+            </button>
+
+
+            <button
+                class="game-btn menu-btn"
+                onclick="goToMenu()">
+
+                🏠 Main Menu
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- RESULT -->
+
+    <div id="resultScreen">
+
+
+        <h2 id="resultTitle">
+            🎉 Game Complete!
+        </h2>
+
+
+        <div class="final-score">
+
+            Final Score:
+
+            <span id="finalScore">
+                0
+            </span>
+
+        </div>
+
+
+        <p
+            class="result-message"
+            id="resultMessage">
+
+            Great job!
+
+        </p>
+
+
+        <div class="result-buttons">
+
+
+            <button
+                class="game-btn play-again"
+                onclick="restartGame()">
+
+                ▶️ Play Again
+
+            </button>
+
+
+            <button
+                class="game-btn menu-btn"
+                onclick="goToMenu()">
+
+                🏠 Main Menu
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+    /* =========================================
+       WORD DATA
+    ========================================= */
+
+    const wordPairs = [
+
+        {
+            word: "Apple",
+            meaning: "A red or green fruit"
+        },
+
+        {
+            word: "Book",
+            meaning: "Something you read"
+        },
+
+        {
+            word: "School",
+            meaning: "A place for learning"
+        },
+
+        {
+            word: "Doctor",
+            meaning: "A person who treats patients"
+        },
+
+        {
+            word: "Computer",
+            meaning: "An electronic machine"
+        },
+
+        {
+            word: "Teacher",
+            meaning: "A person who teaches"
+        },
+
+        {
+            word: "Water",
+            meaning: "A liquid we drink"
+        },
+
+        {
+            word: "House",
+            meaning: "A place where people live"
+        },
+
+        {
+            word: "Car",
+            meaning: "A vehicle with four wheels"
+        },
+
+        {
+            word: "Bookstore",
+            meaning: "A place where books are sold"
+        },
+
+        {
+            word: "Garden",
+            meaning: "A place where plants grow"
+        },
+
+        {
+            word: "Friend",
+            meaning: "A person you like and trust"
+        }
+
+    ];
+
+
+    /* =========================================
+       GET SETTINGS FROM URL
+    ========================================= */
+
+    const urlParams =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    let selectedTime =
+        parseInt(
+            urlParams.get("time")
+        );
+
+
+    let selectedDifficulty =
+        urlParams.get("difficulty");
+
+
+    /* DEFAULT VALUES */
+
+    if (isNaN(selectedTime)) {
+
+        selectedTime = 300;
+
+    }
+
+
+    if (!selectedDifficulty) {
+
+        selectedDifficulty = "easy";
+
+    }
+
+
+    /* =========================================
+       VARIABLES
+    ========================================= */
+
+    let cards = [];
+
+    let firstCard = null;
+
+    let secondCard = null;
+
+    let lockBoard = false;
+
+    let score = 0;
+
+    let matches = 0;
+
+    let lives = 3;
+
+    let timeLeft = selectedTime;
+
+    let timer;
+
+
+    /* =========================================
+       ELEMENTS
+    ========================================= */
+
+    const gameBoard =
+        document.getElementById(
+            "gameBoard"
+        );
+
+
+    const scoreDisplay =
+        document.getElementById(
+            "score"
+        );
+
+
+    const matchesDisplay =
+        document.getElementById(
+            "matches"
+        );
+
+
+    const totalPairsDisplay =
+        document.getElementById(
+            "totalPairs"
+        );
+
+
+    const timerDisplay =
+        document.getElementById(
+            "timer"
+        );
+
+
+    const livesDisplay =
+        document.getElementById(
+            "lives"
+        );
+
+
+    const message =
+        document.getElementById(
+            "message"
+        );
+
+
+    const gameArea =
+        document.getElementById(
+            "gameArea"
+        );
+
+
+    const resultScreen =
+        document.getElementById(
+            "resultScreen"
+        );
+
+
+    const finalScore =
+        document.getElementById(
+            "finalScore"
+        );
+
+
+    const resultTitle =
+        document.getElementById(
+            "resultTitle"
+        );
+
+
+    const resultMessage =
+        document.getElementById(
+            "resultMessage"
+        );
+
+
+    /* =========================================
+       START GAME
+    ========================================= */
+
+    function startGame() {
+
+
+        clearInterval(timer);
+
+
+        score = 0;
+
+        matches = 0;
+
+        lives = 3;
+
+        timeLeft = selectedTime;
+
+        firstCard = null;
+
+        secondCard = null;
+
+        lockBoard = false;
+
+
+        scoreDisplay.textContent =
+            score;
+
+
+        matchesDisplay.textContent =
+            matches;
+
+
+        livesDisplay.textContent =
+            lives;
+
+
+        message.textContent = "";
+
+
+        /* DIFFICULTY */
+
+        let pairCount = 8;
+
+
+        if (
+            selectedDifficulty ===
+            "medium"
+        ) {
+
+            pairCount = 10;
+
+        }
+
+
+        if (
+            selectedDifficulty ===
+            "hard"
+        ) {
+
+            pairCount = 12;
+
+        }
+
+
+        const selectedPairs =
+            wordPairs.slice(
+                0,
+                pairCount
+            );
+
+
+        totalPairsDisplay.textContent =
+            selectedPairs.length;
+
+
+        gameBoard.innerHTML = "";
+
+
+        cards = [];
+
+
+        /* CREATE WORD CARDS */
+
+        selectedPairs.forEach(
+            (pair, index) => {
+
+
+                cards.push({
+
+                    id: index,
+
+                    type: "word",
+
+                    value: pair.word,
+
+                    pairId: index
+
+                });
+
+
+                cards.push({
+
+                    id: index + 100,
+
+                    type: "meaning",
+
+                    value: pair.meaning,
+
+                    pairId: index
+
+                });
+
+            }
+        );
+
+
+        shuffle(cards);
+
+
+        /* CREATE BUTTONS */
+
+        cards.forEach(card => {
+
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.classList.add(
+                "card"
+            );
+
+
+            button.textContent =
+                card.value;
+
+
+            button.dataset.pairId =
+                card.pairId;
+
+
+            button.addEventListener(
+                "click",
+                () =>
+                    selectCard(button)
+            );
+
+
+            gameBoard.appendChild(
+                button
+            );
+
+        });
+
+
+        /* TIMER */
+
+        if (selectedTime > 0) {
+
+            updateTimerDisplay();
+
+            startTimer();
+
+        }
+
+        else {
+
+            timerDisplay.textContent =
+                "∞";
+
+        }
+
+    }
+
+
+    /* =========================================
+       SHUFFLE
+    ========================================= */
+
+    function shuffle(array) {
+
+
+        for (
+            let i = array.length - 1;
+            i > 0;
+            i--
+        ) {
+
+
+            const j =
+                Math.floor(
+                    Math.random()
+                    * (i + 1)
+                );
+
+
+            [
+                array[i],
+                array[j]
+            ] =
+            [
+                array[j],
+                array[i]
+            ];
+
+        }
+
+    }
+
+
+    /* =========================================
+       SELECT CARD
+    ========================================= */
+
+    function selectCard(card) {
+
+
+        if (lockBoard)
+            return;
+
+
+        if (
+            card.classList
+                .contains("correct")
+        )
+            return;
+
+
+        if (card === firstCard)
+            return;
+
+
+        card.classList.add(
+            "selected"
+        );
+
+
+        if (!firstCard) {
+
+            firstCard = card;
+
+            return;
+
+        }
+
+
+        secondCard = card;
+
+
+        checkMatch();
+
+    }
+
+
+    /* =========================================
+       CHECK MATCH
+    ========================================= */
+
+    function checkMatch() {
+
+
+        const isMatch =
+
+            firstCard.dataset.pairId ===
+            secondCard.dataset.pairId;
+
+
+        /* CORRECT */
+
+        if (isMatch) {
+
+
+            firstCard.classList.remove(
+                "selected"
+            );
+
+
+            secondCard.classList.remove(
+                "selected"
+            );
+
+
+            firstCard.classList.add(
+                "correct"
+            );
+
+
+            secondCard.classList.add(
+                "correct"
+            );
+
+
+            score += 10;
+
+            matches++;
+
+
+            scoreDisplay.textContent =
+                score;
+
+
+            matchesDisplay.textContent =
+                matches;
+
+
+            message.textContent =
+                "✅ Correct!";
+
+
+            setTimeout(() => {
+
+                message.textContent = "";
+
+            }, 700);
+
+
+            resetCards();
+
+
+            if (
+                matches ===
+                Number(
+                    totalPairsDisplay
+                        .textContent
+                )
+            ) {
+
+                finishGame(true);
+
+            }
+
+        }
+
+
+        /* WRONG */
+
+        else {
+
+
+            lockBoard = true;
+
+
+            lives--;
+
+
+            livesDisplay.textContent =
+                lives;
+
+
+            firstCard.classList.add(
+                "wrong"
+            );
+
+
+            secondCard.classList.add(
+                "wrong"
+            );
+
+
+            score =
+                Math.max(
+                    0,
+                    score - 2
+                );
+
+
+            scoreDisplay.textContent =
+                score;
+
+
+            message.textContent =
+                "❌ Not a match!";
+
+
+            setTimeout(() => {
+
+
+                if (firstCard) {
+
+                    firstCard
+                        .classList
+                        .remove(
+                            "selected",
+                            "wrong"
+                        );
+
+                }
+
+
+                if (secondCard) {
+
+                    secondCard
+                        .classList
+                        .remove(
+                            "selected",
+                            "wrong"
+                        );
+
+                }
+
+
+                resetCards();
+
+
+                if (lives <= 0) {
+
+                    finishGame(false);
+
+                }
+
+            }, 800);
+
+        }
+
+    }
+
+
+    /* =========================================
+       RESET CARDS
+    ========================================= */
+
+    function resetCards() {
+
+        firstCard = null;
+
+        secondCard = null;
+
+        lockBoard = false;
+
+    }
+
+
+    /* =========================================
+       TIMER
+    ========================================= */
+
+    function startTimer() {
+
+
+        timer = setInterval(() => {
+
+
+            timeLeft--;
+
+
+            updateTimerDisplay();
+
+
+            if (timeLeft <= 0) {
+
+
+                clearInterval(timer);
+
+
+                finishGame(false);
+
+            }
+
+
+        }, 1000);
+
+    }
+
+
+    /* =========================================
+       TIMER DISPLAY
+    ========================================= */
+
+    function updateTimerDisplay() {
+
+
+        const minutes =
+            Math.floor(
+                timeLeft / 60
+            );
+
+
+        const seconds =
+            timeLeft % 60;
+
+
+        timerDisplay.textContent =
+
+            String(minutes)
+                .padStart(2, "0")
+
+            + ":"
+
+            + String(seconds)
+                .padStart(2, "0");
+
+    }
+
+
+    /* =========================================
+       FINISH GAME
+    ========================================= */
+
+    function finishGame(won) {
+
+
+        clearInterval(timer);
+
+
+        lockBoard = true;
+
+
+        setTimeout(() => {
+
+
+            gameArea.style.display =
+                "none";
+
+
+            resultScreen.style.display =
+                "block";
+
+
+            finalScore.textContent =
+                score;
+
+
+            /* WIN */
+
+            if (won) {
+
+
+                resultTitle.textContent =
+                    "🎉 Congratulations!";
+
+
+                resultMessage.textContent =
+                    "Excellent! You matched all the words!";
+
+            }
+
+
+            /* NO LIVES */
+
+            else if (lives <= 0) {
+
+
+                resultTitle.textContent =
+                    "💔 Game Over!";
+
+
+                resultMessage.textContent =
+                    "You used all your lives. Try again!";
+
+            }
+
+
+            /* TIME */
+
+            else {
+
+
+                resultTitle.textContent =
+                    "⏰ Time's Up!";
+
+
+                resultMessage.textContent =
+                    "Your time is finished. Try again!";
+
+            }
+
+
+        }, 500);
+
+    }
+
+
+    /* =========================================
+       RESTART
+    ========================================= */
+
+    function restartGame() {
+
+
+        resultScreen.style.display =
+            "none";
+
+
+        gameArea.style.display =
+            "block";
+
+
+        startGame();
+
+    }
+
+
+    /* =========================================
+       MAIN MENU
+    ========================================= */
+
+    function goToMenu() {
+
+
+        clearInterval(timer);
+
+
+        window.location.href =
+            "main_menu.html";
+
+    }
+
+
+    /* =========================================
+       START AUTOMATICALLY
+    ========================================= */
+
+    startGame();
+
+
+</script>
+
+
+</body>
+
+</html>

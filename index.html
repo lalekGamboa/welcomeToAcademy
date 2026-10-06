@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>English Learning Dashboard</title>
+
+    <link rel="stylesheet" href="css/simile_Dashboard.css">
+</head>
+
+
+<body>
+
+
+    <!-- MAIN DASHBOARD -->
+
+    <div class="dashboard">
+
+        <img src="img/images.jpg"alt="similie_logo" width="200">
+        <h1>
+            Welcome to Simile Academy
+        </h1>
+
+
+        <p>
+            Choose an option to continue learning.
+        </p>
+
+
+        <!-- TWO BOXES -->
+
+        <div class="box-container">
+
+
+            <!-- PLACEMENT TEXT -->
+
+            <div
+                class="dashboard-box placement-box"
+                onclick="openPlacement()">
+
+                <div class="box-icon">
+                    📄
+                </div>
+
+                <h2>
+                    Placement Text
+                </h2>
+
+                <span>
+                    Take a placement test to
+                    check your level of your knoledge
+                </span>
+
+            </div>
+
+
+            <!-- SIMILIE GAME -->
+
+            <div
+                class="dashboard-box similie-box"
+                onclick="openSimilieGame()">
+
+                <div class="box-icon">
+                    🎮
+                </div>
+
+                <h2>
+                    Similie Game
+                </h2>
+
+                <span>
+                    by playing the game to know your IQ.
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="footer">
+
+            Learn in academy • Test • Play • Improve 🎓
+
+        </div>
+
+
+    </div>
+
+
+    <script>
+
+
+        /* ===============================
+           PLACEMENT TEST
+        =============================== */
+
+        function openPlacement() {
+
+            window.location.href =
+                "placement.html";
+
+        }
+
+
+        /* ===============================
+           SIMILIE GAME
+        =============================== */
+
+        function openSimilieGame() {
+
+            window.location.href =
+                "main_menu.html";
+
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>

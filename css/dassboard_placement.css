@@ -1,0 +1,170 @@
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0072ff, #00c6ff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .dashboard {
+            width: 100%;
+            max-width: 1100px;
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.20);
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-header h1 {
+            color: #123;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .card {
+            text-decoration: none;
+            color: #222;
+            background: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            padding: 25px 20px;
+            min-height: 190px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+            border-color: #0072ff;
+        }
+
+        .card-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 12px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 28px;
+            margin-bottom: 18px;
+        }
+
+        .office {
+            background: #e8f1ff;
+        }
+
+        .python {
+            background: #fff3d6;
+        }
+
+        .kids {
+            background: #e8ffe9;
+        }
+
+        .excel {
+            background: #e6fff5;
+        }
+
+        .champion {
+            background: #f1e8ff;
+        }
+
+        .professional {
+            background: #ffe9e9;
+        }
+
+        .card h2 {
+            font-size: 19px;
+            margin-bottom: 8px;
+            color: #222;
+        }
+
+        .card p {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #666;
+        }
+
+        /* Open Test */
+        .open-test {
+            margin-top: 18px;
+            color: #0072ff;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .card:hover .open-test {
+            color: #0051b3;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 30px;
+            text-decoration: none;
+            background: #333;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .back-button:hover {
+            background: #111;
+        }
+
+        @media (max-width: 900px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+
+            .dashboard {
+                padding: 25px 18px;
+            }
+
+            .dashboard-header h1 {
+                font-size: 26px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
